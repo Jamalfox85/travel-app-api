@@ -1,0 +1,31 @@
+{
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "driver": "MySQL",
+      "database": "financialdashboard",
+      "name": "Financial Planner",
+      "username": "root",
+      "password": ""
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
+      "server": "jf-travelapp.cpuwwoyiywnw.us-east-1.rds.amazonaws.com",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "Travel App",
+      "database": "travel_app",
+      "username": "admin",
+      "askForPassword": true
+    }
+  ]
+}
