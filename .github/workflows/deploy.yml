@@ -22,5 +22,5 @@ jobs:
 
       - name: Deploy to Elastic Beanstalk
         run: |
-          eb init -p go travel-app-api-dev --region us-east-1
+          eb init -p go run travel-app-api-dev . --region us-east-1
           eb deploy
