@@ -1,18 +1,15 @@
 package main
 
 import (
-	"fmt"
 	"travel-app-api/api"
-
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func helloWorld(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintf(w, "Hello World")
-}
+// func helloWorld(w http.ResponseWriter, r *http.Request) {
+//     fmt.Fprintf(w, "Hello World")
+// }
 
 func main() {
     // Disable Extra Gin Logs
@@ -26,7 +23,7 @@ func main() {
     server := api.NewServer(listenAddr)
     server.Start(app)
 
-    http.HandleFunc("/", helloWorld)
-    http.ListenAndServe(":5000", nil)
+    // http.HandleFunc("/", helloWorld)
+    // http.ListenAndServe(":5000", nil)
     
 }
