@@ -19,7 +19,7 @@ func main() {
     app := api.NewApplication()
 
     // Set server port and start
-    listenAddr := "localhost:8080"
+    listenAddr := "8080"
     server := api.NewServer(listenAddr)
     server.Start(app)
 
