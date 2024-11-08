@@ -2,6 +2,8 @@ package api
 
 import (
 	"fmt"
+	"log"
+	"os"
 	"travel-app-api/api/handlers"
 	"travel-app-api/data"
 
@@ -23,6 +25,14 @@ func NewServer(	listenAddr string) *Server {
 
 func (s *Server) Start(app *Application) {
 	router := gin.Default()
+	router.Use(CORSMiddleware())
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+
 
 	// Users
 	router.GET("/users/:userId", handlers.GetUser(app.Users))
@@ -36,6 +46,24 @@ func (s *Server) Start(app *Application) {
 
 	
 	fmt.Println("Server Running on", s.listenAddr);
-    router.Run(s.listenAddr)
+    // router.Run(s.listenAddr)
+	if err := router.Run(":" + port); err != nil {
+		log.Panicf("error: %s", err)
+	}
 }
 
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
+}
