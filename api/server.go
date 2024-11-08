@@ -3,7 +3,6 @@ package api
 import (
 	"fmt"
 	"log"
-	"os"
 	"travel-app-api/api/handlers"
 	"travel-app-api/data"
 
@@ -27,13 +26,6 @@ func (s *Server) Start(app *Application) {
 	router := gin.Default()
 	router.Use(CORSMiddleware())
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-
-
-
 	// Users
 	router.GET("/users/:userId", handlers.GetUser(app.Users))
 	
@@ -44,10 +36,8 @@ func (s *Server) Start(app *Application) {
 	router.GET("/itinerary/:tripId", handlers.GetItineraryItems(app.ItineraryItems))
 
 
-	
 	fmt.Println("Server Running on", s.listenAddr);
-    // router.Run(s.listenAddr)
-	if err := router.Run(":" + port); err != nil {
+	if err := router.Run(":" + s.listenAddr); err != nil {
 		log.Panicf("error: %s", err)
 	}
 }

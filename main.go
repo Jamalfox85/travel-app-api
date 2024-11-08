@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"travel-app-api/api"
 
 	"github.com/gin-gonic/gin"
@@ -8,8 +9,7 @@ import (
 )
 
 func main() {
-    // router := gin.Default()
-	// router.Use(CORSMiddleware())
+
     // Disable Extra Gin Logs
     gin.SetMode(gin.ReleaseMode)
 
@@ -17,8 +17,11 @@ func main() {
     app := api.NewApplication()
 
     // Set server port and start
-    listenAddr := "8080"
-    server := api.NewServer(listenAddr)
+    port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+    server := api.NewServer(port)
     server.Start(app)
 
 }
