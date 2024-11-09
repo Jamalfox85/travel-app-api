@@ -18,10 +18,12 @@ type ItineraryItem struct {
 }
 
 type Trip struct {
-	Tripid   int32
-	Title    sql.NullString
-	Location sql.NullString
-	Userid   sql.NullInt32
+	Tripid    int32
+	Title     sql.NullString
+	Location  sql.NullString
+	Userid    sql.NullInt32
+	StartTime sql.NullTime
+	EndTime   sql.NullTime
 }
 
 type User struct {

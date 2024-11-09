@@ -10,9 +10,11 @@ CREATE TABLE `Users` (
 
 CREATE TABLE `Trips` (
   `TripID` int NOT NULL AUTO_INCREMENT,
-  `Title` varchar(255) DEFAULT NULL,
-  `Location` varchar(255) DEFAULT NULL,
-  `UserID` int DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `userId` int DEFAULT NULL,
+  `start_time` date DEFAULT NULL,
+  `end_time` date DEFAULT NULL,
   PRIMARY KEY (`TripID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
