@@ -23,4 +23,15 @@
 ```
 'sqlc generate'
 ```
-# travel-app-api
+
+## Committing to Github (and deploying API)
+
+```
+'git add .'
+'git commit -m ""'
+'git push origin main'
+```
+
+## Services
+
+DB - AWS DBS API Host - Render
