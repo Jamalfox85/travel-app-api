@@ -14,6 +14,8 @@ type Trip struct {
 	Title		string
 	Location	string
 	UserID		int
+	StartDate	string
+	EndDate		string
 }
 
 type TripRepository struct {
@@ -43,6 +45,8 @@ func (r *TripRepository) FindTrips(ctx *gin.Context, userId int) ([]Trip, error)
 			Title:		row.Title.String,
 			Location:	row.Location.String,
 			UserID:		int(row.Userid.Int32),
+			StartDate:	row.StartDate.Time.Format("YYYY-MM-DD"),
+			EndDate:	row.EndDate.Time.Format("YYYY-MM-DD"),
 		}
 		trips = append(trips, trip)
 	}

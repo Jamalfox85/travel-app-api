@@ -22,8 +22,8 @@ type Trip struct {
 	Title     sql.NullString
 	Location  sql.NullString
 	Userid    sql.NullInt32
-	StartTime sql.NullTime
-	EndTime   sql.NullTime
+	StartDate sql.NullTime
+	EndDate   sql.NullTime
 }
 
 type User struct {
