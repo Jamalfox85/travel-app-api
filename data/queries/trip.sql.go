@@ -8,22 +8,33 @@ package queries
 import (
 	"context"
 	"database/sql"
+	"time"
 )
 
 const getTripsByUser = `-- name: GetTripsByUser :many
-SELECT tripid, title, location, userid, start_date, end_date FROM Trips
+SELECT tripId, title, location, userId, CAST(start_date AS DATE) AS start_date, CAST(end_date AS DATE) AS end_date
+FROM Trips
 WHERE userId = ?
 `
 
-func (q *Queries) GetTripsByUser(ctx context.Context, userid sql.NullInt32) ([]Trip, error) {
+type GetTripsByUserRow struct {
+	Tripid    int32
+	Title     sql.NullString
+	Location  sql.NullString
+	Userid    sql.NullInt32
+	StartDate time.Time
+	EndDate   time.Time
+}
+
+func (q *Queries) GetTripsByUser(ctx context.Context, userid sql.NullInt32) ([]GetTripsByUserRow, error) {
 	rows, err := q.db.QueryContext(ctx, getTripsByUser, userid)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Trip
+	var items []GetTripsByUserRow
 	for rows.Next() {
-		var i Trip
+		var i GetTripsByUserRow
 		if err := rows.Scan(
 			&i.Tripid,
 			&i.Title,

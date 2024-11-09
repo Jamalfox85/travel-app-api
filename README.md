@@ -34,4 +34,4 @@
 
 ## Services
 
-DB - AWS DBS API Host - Render
+DB - AWS RDS API Host - Render

@@ -9,13 +9,13 @@ CREATE TABLE `Users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `Trips` (
-  `TripID` int NOT NULL AUTO_INCREMENT,
+  `tripId` int NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
   `userId` int DEFAULT NULL,
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
-  PRIMARY KEY (`TripID`)
+  PRIMARY KEY (`tripId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `Itinerary_Items` (
