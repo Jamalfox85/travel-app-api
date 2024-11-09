@@ -32,6 +32,8 @@ func NewTripRepository(db *sql.DB) *TripRepository {
 
 func (r *TripRepository) FindTrips(ctx *gin.Context, userId int) ([]Trip, error) {
 	formattedUserId := NewNullInt32(int32(userId))
+
+	fmt.Println("formattedUserId", formattedUserId)
 	
 	rows, err := r.queries.GetTripsByUser(ctx, formattedUserId)
 	if err != nil {

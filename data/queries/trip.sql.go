@@ -12,7 +12,7 @@ import (
 
 const getTripsByUser = `-- name: GetTripsByUser :many
 SELECT tripid, title, location, userid, start_date, end_date FROM Trips
-WHERE UserID = ?
+WHERE userId = ?
 `
 
 func (q *Queries) GetTripsByUser(ctx context.Context, userid sql.NullInt32) ([]Trip, error) {
