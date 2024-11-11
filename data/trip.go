@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"time"
 
 	"travel-app-api/data/queries"
 
@@ -17,6 +18,8 @@ type Trip struct {
 	UserID			int
 	Start_date		string
 	End_date		string
+	Place_id		string
+	Photo_uri		string
 }
 
 type TripRepository struct {
@@ -47,11 +50,34 @@ func (r *TripRepository) FindTrips(ctx *gin.Context, userId int) ([]Trip, error)
 			Title:		row.Title.String,
 			Location:	row.Location.String,
 			UserID:		int(row.Userid.Int32),
-			Start_date:	row.StartDate.Format("2006-01-02"),
-			End_date:	row.EndDate.Format("2006-01-02"),
+			Start_date:	row.StartDate.Time.Format("2006-01-02"),
+			End_date:	row.EndDate.Time.Format("2006-01-02"),
+			Place_id: 	row.PlaceID.String,
+			Photo_uri: 	row.PhotoUri.String,
 		}
 		trips = append(trips, trip)
 	}
 
 	return trips, nil
+}
+
+func (r * TripRepository) CreateTrip(ctx *gin.Context, newTrip Trip) (error) {
+	formattedStartDate, _ := time.Parse("2006-01-02", newTrip.Start_date)
+	formattedEndDate, _ := time.Parse("2006-01-02", newTrip.End_date)
+
+	params := queries.CreateTripParams{
+		Title: sql.NullString{String: newTrip.Title, Valid: newTrip.Title != ""},
+		Location: sql.NullString{String: newTrip.Location, Valid: newTrip.Location != ""},
+		Userid: sql.NullInt32{Int32: int32(newTrip.UserID), Valid: true},
+		StartDate: sql.NullTime{Time: formattedStartDate, Valid: true},
+		EndDate:  sql.NullTime{Time: formattedEndDate, Valid: true},
+		PlaceID: sql.NullString{String: newTrip.Place_id, Valid: newTrip.Place_id != ""},
+		PhotoUri: sql.NullString{String: newTrip.Photo_uri, Valid: newTrip.Photo_uri != ""},
+	}
+
+	err := r.queries.CreateTrip(ctx, params);
+	if err != nil {
+		return fmt.Errorf("error creating new trip")
+	}
+	return nil
 }

@@ -31,6 +31,7 @@ func (s *Server) Start(app *Application) {
 	
 	// Trips
 	router.GET("/trips/:userId", handlers.GetTrips(app.Trips))
+	router.POST("/trips", handlers.CreateTrip(app.Trips))
 
 	// Itinerary Items
 	router.GET("/itinerary/:tripId", handlers.GetItineraryItems(app.ItineraryItems))

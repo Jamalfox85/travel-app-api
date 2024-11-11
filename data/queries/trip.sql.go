@@ -8,33 +8,50 @@ package queries
 import (
 	"context"
 	"database/sql"
-	"time"
 )
 
-const getTripsByUser = `-- name: GetTripsByUser :many
-SELECT tripId, title, location, userId, CAST(start_date AS DATE) AS start_date, CAST(end_date AS DATE) AS end_date
-FROM Trips
-WHERE userId = ?
+const createTrip = `-- name: CreateTrip :exec
+INSERT INTO Trips (Title, Location, userId, start_date, end_date, place_id, photo_uri)
+VALUES (?, ?, ?, ?, ?, ?, ?)
 `
 
-type GetTripsByUserRow struct {
-	Tripid    int32
+type CreateTripParams struct {
 	Title     sql.NullString
 	Location  sql.NullString
 	Userid    sql.NullInt32
-	StartDate time.Time
-	EndDate   time.Time
+	StartDate sql.NullTime
+	EndDate   sql.NullTime
+	PlaceID   sql.NullString
+	PhotoUri  sql.NullString
 }
 
-func (q *Queries) GetTripsByUser(ctx context.Context, userid sql.NullInt32) ([]GetTripsByUserRow, error) {
+func (q *Queries) CreateTrip(ctx context.Context, arg CreateTripParams) error {
+	_, err := q.db.ExecContext(ctx, createTrip,
+		arg.Title,
+		arg.Location,
+		arg.Userid,
+		arg.StartDate,
+		arg.EndDate,
+		arg.PlaceID,
+		arg.PhotoUri,
+	)
+	return err
+}
+
+const getTripsByUser = `-- name: GetTripsByUser :many
+SELECT tripid, title, location, userid, start_date, end_date, place_id, photo_uri FROM Trips
+WHERE userId = ?
+`
+
+func (q *Queries) GetTripsByUser(ctx context.Context, userid sql.NullInt32) ([]Trip, error) {
 	rows, err := q.db.QueryContext(ctx, getTripsByUser, userid)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []GetTripsByUserRow
+	var items []Trip
 	for rows.Next() {
-		var i GetTripsByUserRow
+		var i Trip
 		if err := rows.Scan(
 			&i.Tripid,
 			&i.Title,
@@ -42,6 +59,8 @@ func (q *Queries) GetTripsByUser(ctx context.Context, userid sql.NullInt32) ([]G
 			&i.Userid,
 			&i.StartDate,
 			&i.EndDate,
+			&i.PlaceID,
+			&i.PhotoUri,
 		); err != nil {
 			return nil, err
 		}
