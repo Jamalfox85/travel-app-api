@@ -16,9 +16,9 @@ CREATE TABLE `Trips` (
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
   `place_id` varchar(255) DEFAULT NULL,
-  `photo_uri` varchar(255) DEFAULT NULL,
+  `photo_uri` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`tripId`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `Itinerary_Items` (
   `ItemID` int NOT NULL AUTO_INCREMENT,
