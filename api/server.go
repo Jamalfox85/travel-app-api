@@ -35,6 +35,7 @@ func (s *Server) Start(app *Application) {
 
 	// Itinerary Items
 	router.GET("/itinerary/:tripId", handlers.GetItineraryItems(app.ItineraryItems))
+	router.POST("/itinerary", handlers.CreateItineraryItem(app.ItineraryItems))
 
 
 	fmt.Println("Server Running on", s.listenAddr);

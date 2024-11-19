@@ -10,8 +10,36 @@ import (
 	"database/sql"
 )
 
+const createItineraryItem = `-- name: CreateItineraryItem :exec
+INSERT INTO Itinerary_Items (tripId, title, date, url, phone, address, poi_id)
+VALUES (?, ?, ?, ?, ?, ?, ?)
+`
+
+type CreateItineraryItemParams struct {
+	Tripid  sql.NullInt32
+	Title   sql.NullString
+	Date    sql.NullTime
+	Url     sql.NullString
+	Phone   sql.NullString
+	Address sql.NullString
+	PoiID   sql.NullString
+}
+
+func (q *Queries) CreateItineraryItem(ctx context.Context, arg CreateItineraryItemParams) error {
+	_, err := q.db.ExecContext(ctx, createItineraryItem,
+		arg.Tripid,
+		arg.Title,
+		arg.Date,
+		arg.Url,
+		arg.Phone,
+		arg.Address,
+		arg.PoiID,
+	)
+	return err
+}
+
 const getItineraryItems = `-- name: GetItineraryItems :many
-SELECT itemid, tripid, title, location, date FROM Itinerary_Items
+SELECT itemid, tripid, title, date, url, phone, address, poi_id FROM Itinerary_Items
 WHERE TripID = ?
 `
 
@@ -28,8 +56,11 @@ func (q *Queries) GetItineraryItems(ctx context.Context, tripid sql.NullInt32) (
 			&i.Itemid,
 			&i.Tripid,
 			&i.Title,
-			&i.Location,
 			&i.Date,
+			&i.Url,
+			&i.Phone,
+			&i.Address,
+			&i.PoiID,
 		); err != nil {
 			return nil, err
 		}

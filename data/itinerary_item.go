@@ -3,6 +3,7 @@ package data
 import (
 	"database/sql"
 	"fmt"
+	"time"
 
 	"travel-app-api/data/queries"
 
@@ -13,8 +14,11 @@ type ItineraryItem struct {
 	ID			int
 	TripID		int
 	Title		string
-	Location	string
 	Date		string
+	Url			string
+	Phone		string
+	Address		string
+	POI_ID		string
 }
 
 type ItineraryItemRepository struct {
@@ -43,12 +47,37 @@ func (r *ItineraryItemRepository) FindItineraryItems(ctx *gin.Context, tripId in
 			ID:			int(row.Itemid),
 			TripID:		int(row.Tripid.Int32),
 			Title:		row.Title.String,
-			Location:	row.Location.String,
 			Date:		row.Date.Time.Format("MM-DD-YY"),
+			Url:		row.Url.String,
+			Phone:		row.Phone.String,
+			Address:	row.Address.String,
+			POI_ID:		row.PoiID.String,
 
 		}
 		itineraryItems = append(itineraryItems, item)
 	}
 
 	return itineraryItems, nil
+}
+
+func (r *ItineraryItemRepository) CreateItineraryItem(ctx *gin.Context, item ItineraryItem) error {
+	formattedDate, _ := time.Parse("2006-01-02", item.Date)
+
+	params := queries.CreateItineraryItemParams{
+		Tripid:		sql.NullInt32{Int32: int32(item.TripID), Valid: item.TripID != 0},
+		Title:		sql.NullString{String: item.Title, Valid: item.Title != ""},
+		Date:		sql.NullTime{Time: formattedDate, Valid: true},
+		Url:		sql.NullString{String: item.Url, Valid: item.Url != ""},
+		Phone:		sql.NullString{String: item.Phone, Valid: item.Phone != ""},
+		Address:	sql.NullString{String: item.Address, Valid: item.Address != ""},
+		PoiID:		sql.NullString{String: item.POI_ID, Valid: item.POI_ID != ""},
+
+	}
+	
+	err := r.queries.CreateItineraryItem(ctx, params)
+	if err != nil {
+		return fmt.Errorf("error creating itinerary item", err)
+	}
+
+	return nil
 }

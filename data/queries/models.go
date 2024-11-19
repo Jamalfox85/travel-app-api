@@ -10,11 +10,14 @@ import (
 )
 
 type ItineraryItem struct {
-	Itemid   int32
-	Tripid   sql.NullInt32
-	Title    sql.NullString
-	Location sql.NullString
-	Date     sql.NullTime
+	Itemid  int32
+	Tripid  sql.NullInt32
+	Title   sql.NullString
+	Date    sql.NullTime
+	Url     sql.NullString
+	Phone   sql.NullString
+	Address sql.NullString
+	PoiID   sql.NullString
 }
 
 type Trip struct {

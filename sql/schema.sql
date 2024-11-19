@@ -24,12 +24,15 @@ CREATE TABLE `Trips` (
 
 CREATE TABLE `Itinerary_Items` (
   `ItemID` int NOT NULL AUTO_INCREMENT,
-  `TripID` int DEFAULT NULL,
-  `Title` varchar(255) DEFAULT NULL,
-  `Location` varchar(255) DEFAULT NULL,
-  `Date` datetime DEFAULT NULL,
+  `tripId` int DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `poi_id` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ItemID`),
-  KEY `TripID` (`TripID`),
-  CONSTRAINT `Itinerary_Items_ibfk_1` FOREIGN KEY (`TripID`) REFERENCES `Trips` (`TripID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `TripID` (`tripId`),
+  CONSTRAINT `Itinerary_Items_ibfk_1` FOREIGN KEY (`tripId`) REFERENCES `Trips` (`tripId`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
