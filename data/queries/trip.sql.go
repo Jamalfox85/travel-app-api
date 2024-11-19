@@ -23,8 +23,8 @@ type CreateTripParams struct {
 	EndDate   sql.NullTime
 	PlaceID   sql.NullString
 	PhotoUri  sql.NullString
-	Latitude  sql.NullInt32
-	Longitude sql.NullInt32
+	Latitude  sql.NullFloat64
+	Longitude sql.NullFloat64
 }
 
 func (q *Queries) CreateTrip(ctx context.Context, arg CreateTripParams) error {
