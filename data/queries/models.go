@@ -26,6 +26,8 @@ type Trip struct {
 	EndDate   sql.NullTime
 	PlaceID   sql.NullString
 	PhotoUri  sql.NullString
+	Latitude  sql.NullString
+	Longitude sql.NullString
 }
 
 type User struct {

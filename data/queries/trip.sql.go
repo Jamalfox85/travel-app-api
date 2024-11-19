@@ -11,8 +11,8 @@ import (
 )
 
 const createTrip = `-- name: CreateTrip :exec
-INSERT INTO Trips (Title, Location, userId, start_date, end_date, place_id, photo_uri)
-VALUES (?, ?, ?, ?, ?, ?, ?)
+INSERT INTO Trips (Title, Location, userId, start_date, end_date, place_id, photo_uri, latitude, longitude)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 `
 
 type CreateTripParams struct {
@@ -23,6 +23,8 @@ type CreateTripParams struct {
 	EndDate   sql.NullTime
 	PlaceID   sql.NullString
 	PhotoUri  sql.NullString
+	Latitude  sql.NullString
+	Longitude sql.NullString
 }
 
 func (q *Queries) CreateTrip(ctx context.Context, arg CreateTripParams) error {
@@ -34,12 +36,14 @@ func (q *Queries) CreateTrip(ctx context.Context, arg CreateTripParams) error {
 		arg.EndDate,
 		arg.PlaceID,
 		arg.PhotoUri,
+		arg.Latitude,
+		arg.Longitude,
 	)
 	return err
 }
 
 const getTripsByUser = `-- name: GetTripsByUser :many
-SELECT tripid, title, location, userid, start_date, end_date, place_id, photo_uri FROM Trips
+SELECT tripid, title, location, userid, start_date, end_date, place_id, photo_uri, latitude, longitude FROM Trips
 WHERE userId = ?
 `
 
@@ -61,6 +65,8 @@ func (q *Queries) GetTripsByUser(ctx context.Context, userid sql.NullInt32) ([]T
 			&i.EndDate,
 			&i.PlaceID,
 			&i.PhotoUri,
+			&i.Latitude,
+			&i.Longitude,
 		); err != nil {
 			return nil, err
 		}

@@ -20,6 +20,8 @@ type Trip struct {
 	End_date		string
 	Place_id		string
 	Photo_uri		string
+	Latitude		string
+	Longitude		string
 }
 
 type TripRepository struct {
@@ -54,6 +56,8 @@ func (r *TripRepository) FindTrips(ctx *gin.Context, userId int) ([]Trip, error)
 			End_date:	row.EndDate.Time.Format("2006-01-02"),
 			Place_id: 	row.PlaceID.String,
 			Photo_uri: 	row.PhotoUri.String,
+			Latitude:	row.Latitude.String,
+			Longitude:	row.Longitude.String,
 		}
 		trips = append(trips, trip)
 	}
@@ -73,6 +77,8 @@ func (r * TripRepository) CreateTrip(ctx *gin.Context, newTrip Trip) (error) {
 		EndDate:  sql.NullTime{Time: formattedEndDate, Valid: true},
 		PlaceID: sql.NullString{String: newTrip.Place_id, Valid: newTrip.Place_id != ""},
 		PhotoUri: sql.NullString{String: newTrip.Photo_uri, Valid: newTrip.Photo_uri != ""},
+		Latitude:	sql.NullString{String: newTrip.Latitude, Valid: newTrip.Latitude != ""},
+		Longitude:	sql.NullString{String: newTrip.Longitude, Valid: newTrip.Longitude != ""},
 	}
 
 	err := r.queries.CreateTrip(ctx, params);
