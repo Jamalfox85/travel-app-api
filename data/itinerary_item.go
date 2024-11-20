@@ -11,14 +11,14 @@ import (
 )
 
 type ItineraryItem struct {
-	ID			int
-	TripID		int
+	Id			int
+	TripId		int
 	Title		string
 	Date		string
 	Url			string
 	Phone		string
 	Address		string
-	POI_ID		string
+	PoiId		string
 }
 
 type ItineraryItemRepository struct {
@@ -44,14 +44,14 @@ func (r *ItineraryItemRepository) FindItineraryItems(ctx *gin.Context, tripId in
 	var itineraryItems []ItineraryItem
 	for _, row := range rows {
 		item := ItineraryItem{
-			ID:			int(row.Itemid),
-			TripID:		int(row.Tripid.Int32),
+			Id:			int(row.Itemid),
+			TripId:		int(row.Tripid.Int32),
 			Title:		row.Title.String,
 			Date:		row.Date.Time.Format("MM-DD-YY"),
 			Url:		row.Url.String,
 			Phone:		row.Phone.String,
 			Address:	row.Address.String,
-			POI_ID:		row.PoiID.String,
+			PoiId:		row.Poiid.String,
 
 		}
 		itineraryItems = append(itineraryItems, item)
@@ -64,13 +64,13 @@ func (r *ItineraryItemRepository) CreateItineraryItem(ctx *gin.Context, item Iti
 	formattedDate, _ := time.Parse("2006-01-02", item.Date)
 
 	params := queries.CreateItineraryItemParams{
-		Tripid:		sql.NullInt32{Int32: int32(item.TripID), Valid: item.TripID != 0},
+		Tripid:		sql.NullInt32{Int32: int32(item.TripId), Valid: item.TripId != 0},
 		Title:		sql.NullString{String: item.Title, Valid: item.Title != ""},
 		Date:		sql.NullTime{Time: formattedDate, Valid: true},
 		Url:		sql.NullString{String: item.Url, Valid: item.Url != ""},
 		Phone:		sql.NullString{String: item.Phone, Valid: item.Phone != ""},
 		Address:	sql.NullString{String: item.Address, Valid: item.Address != ""},
-		PoiID:		sql.NullString{String: item.POI_ID, Valid: item.POI_ID != ""},
+		Poiid:		sql.NullString{String: item.PoiId, Valid: item.PoiId != ""},
 
 	}
 	

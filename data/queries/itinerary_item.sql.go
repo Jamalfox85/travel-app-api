@@ -11,7 +11,7 @@ import (
 )
 
 const createItineraryItem = `-- name: CreateItineraryItem :exec
-INSERT INTO Itinerary_Items (tripId, title, date, url, phone, address, poi_id)
+INSERT INTO Itinerary_Items (tripId, title, date, url, phone, address, poiId)
 VALUES (?, ?, ?, ?, ?, ?, ?)
 `
 
@@ -22,7 +22,7 @@ type CreateItineraryItemParams struct {
 	Url     sql.NullString
 	Phone   sql.NullString
 	Address sql.NullString
-	PoiID   sql.NullString
+	Poiid   sql.NullString
 }
 
 func (q *Queries) CreateItineraryItem(ctx context.Context, arg CreateItineraryItemParams) error {
@@ -33,13 +33,13 @@ func (q *Queries) CreateItineraryItem(ctx context.Context, arg CreateItineraryIt
 		arg.Url,
 		arg.Phone,
 		arg.Address,
-		arg.PoiID,
+		arg.Poiid,
 	)
 	return err
 }
 
 const getItineraryItems = `-- name: GetItineraryItems :many
-SELECT itemid, tripid, title, date, url, phone, address, poi_id FROM Itinerary_Items
+SELECT itemid, tripid, title, date, url, phone, address, poiid, iscustom, photouri FROM Itinerary_Items
 WHERE TripID = ?
 `
 
@@ -60,7 +60,9 @@ func (q *Queries) GetItineraryItems(ctx context.Context, tripid sql.NullInt32) (
 			&i.Url,
 			&i.Phone,
 			&i.Address,
-			&i.PoiID,
+			&i.Poiid,
+			&i.Iscustom,
+			&i.Photouri,
 		); err != nil {
 			return nil, err
 		}

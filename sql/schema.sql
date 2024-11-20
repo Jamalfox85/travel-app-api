@@ -1,4 +1,4 @@
-CREATE TABLE `Users` (
+CREATE TABLE `users` (
   `UserID` int NOT NULL AUTO_INCREMENT,
   `FirstName` varchar(255) DEFAULT NULL,
   `LastName` varchar(255) DEFAULT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE `Users` (
   PRIMARY KEY (`UserID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE `Trips` (
+CREATE TABLE `trips` (
   `tripId` int NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
@@ -22,17 +22,19 @@ CREATE TABLE `Trips` (
   PRIMARY KEY (`tripId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE `Itinerary_Items` (
-  `ItemID` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `itinerary_items` (
+  `ItemId` int NOT NULL AUTO_INCREMENT,
   `tripId` int DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
   `date` datetime DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
-  `poi_id` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`ItemID`),
+  `poiId` varchar(255) DEFAULT NULL,
+  `isCustom` tinyint(1) DEFAULT NULL,
+  `photoUri` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ItemId`),
   KEY `TripID` (`tripId`),
-  CONSTRAINT `Itinerary_Items_ibfk_1` FOREIGN KEY (`tripId`) REFERENCES `Trips` (`tripId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `itinerary_items_ibfk_1` FOREIGN KEY (`tripId`) REFERENCES `trips` (`tripId`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
