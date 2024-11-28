@@ -11,7 +11,7 @@ import (
 )
 
 const createTrip = `-- name: CreateTrip :exec
-INSERT INTO Trips (Title, Location, userId, start_date, end_date, place_id, photo_uri, latitude, longitude)
+INSERT INTO trips (Title, Location, userId, start_date, end_date, place_id, photo_uri, latitude, longitude)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 `
 
@@ -43,7 +43,7 @@ func (q *Queries) CreateTrip(ctx context.Context, arg CreateTripParams) error {
 }
 
 const getTripsByUser = `-- name: GetTripsByUser :many
-SELECT tripid, title, location, userid, start_date, end_date, place_id, photo_uri, latitude, longitude FROM Trips
+SELECT tripid, title, location, userid, start_date, end_date, place_id, photo_uri, latitude, longitude FROM trips
 WHERE userId = ?
 `
 

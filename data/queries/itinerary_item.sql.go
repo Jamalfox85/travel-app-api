@@ -11,7 +11,7 @@ import (
 )
 
 const createItineraryItem = `-- name: CreateItineraryItem :exec
-INSERT INTO Itinerary_Items (tripId, title, date, url, phone, address, poiId)
+INSERT INTO itinerary_items (tripId, title, date, url, phone, address, poiId)
 VALUES (?, ?, ?, ?, ?, ?, ?)
 `
 
@@ -39,7 +39,7 @@ func (q *Queries) CreateItineraryItem(ctx context.Context, arg CreateItineraryIt
 }
 
 const getItineraryItems = `-- name: GetItineraryItems :many
-SELECT itemid, tripid, title, date, url, phone, address, poiid, iscustom, photouri FROM Itinerary_Items
+SELECT itemid, tripid, title, date, url, phone, address, poiid, iscustom, photouri FROM itinerary_items
 WHERE TripID = ?
 `
 

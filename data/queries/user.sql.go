@@ -10,7 +10,7 @@ import (
 )
 
 const getUser = `-- name: GetUser :one
-SELECT userid, firstname, lastname, email, username, preferences FROM Users
+SELECT userid, firstname, lastname, email, username, preferences FROM users
 WHERE UserID = ?
 `
 
