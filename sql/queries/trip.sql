@@ -1,7 +1,7 @@
 -- name: GetTripsByUser :many
-SELECT * FROM Trips
+SELECT * FROM trips
 WHERE userId = ?;
 
 -- name: CreateTrip :exec
-INSERT INTO Trips (Title, Location, userId, start_date, end_date, place_id, photo_uri, latitude, longitude)
+INSERT INTO trips (Title, Location, userId, start_date, end_date, place_id, photo_uri, latitude, longitude)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);

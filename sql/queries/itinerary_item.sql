@@ -1,7 +1,7 @@
 -- name: GetItineraryItems :many
-SELECT * FROM Itinerary_Items
+SELECT * FROM itinerary_items
 WHERE TripID = ?;
 
 -- name: CreateItineraryItem :exec
-INSERT INTO Itinerary_Items (tripId, title, date, url, phone, address, poiId)
+INSERT INTO itinerary_items (tripId, title, date, url, phone, address, poiId)
 VALUES (?, ?, ?, ?, ?, ?, ?);

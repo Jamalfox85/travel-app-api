@@ -1,3 +1,3 @@
 -- name: GetUser :one
-SELECT * FROM Users
+SELECT * FROM users
 WHERE UserID = ?;
