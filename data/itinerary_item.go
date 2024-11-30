@@ -19,6 +19,8 @@ type ItineraryItem struct {
 	Phone		string
 	Address		string
 	PoiId		string
+	Rating		int
+	Price		int
 }
 
 type ItineraryItemRepository struct {
@@ -52,6 +54,8 @@ func (r *ItineraryItemRepository) FindItineraryItems(ctx *gin.Context, tripId in
 			Phone:		row.Phone.String,
 			Address:	row.Address.String,
 			PoiId:		row.Poiid.String,
+			Rating: 	int(row.Rating.Int32),
+			Price:		int(row.Price.Int32),
 
 		}
 		itineraryItems = append(itineraryItems, item)
@@ -71,6 +75,8 @@ func (r *ItineraryItemRepository) CreateItineraryItem(ctx *gin.Context, item Iti
 		Phone:		sql.NullString{String: item.Phone, Valid: item.Phone != ""},
 		Address:	sql.NullString{String: item.Address, Valid: item.Address != ""},
 		Poiid:		sql.NullString{String: item.PoiId, Valid: item.PoiId != ""},
+		Rating:		sql.NullInt32{Int32: int32(item.Rating), Valid: item.Rating != 0},
+		Price:		sql.NullInt32{Int32: int32(item.Price), Valid: item.Price != 0},
 
 	}
 	

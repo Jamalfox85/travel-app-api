@@ -17,9 +17,9 @@ type ItineraryItemFinder interface {
 func GetItineraryItems(itineraryItems ItineraryItemFinder) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tripId, _ := strconv.Atoi(ctx.Param("tripId"))
-		fmt.Println("tripId", tripId);
 		itemArray, _ := itineraryItems.FindItineraryItems(ctx, tripId)
 
+		fmt.Println("itemArray", itemArray)
 		ctx.IndentedJSON(http.StatusOK, itemArray)
 	}
 }

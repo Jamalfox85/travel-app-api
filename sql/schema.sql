@@ -33,6 +33,8 @@ CREATE TABLE `itinerary_items` (
   `poiId` varchar(255) DEFAULT NULL,
   `isCustom` tinyint(1) DEFAULT NULL,
   `photoUri` varchar(255) DEFAULT NULL,
+  `rating` int DEFAULT NULL,
+  `price` int DEFAULT NULL,
   PRIMARY KEY (`ItemId`),
   KEY `TripID` (`tripId`),
   CONSTRAINT `itinerary_items_ibfk_1` FOREIGN KEY (`tripId`) REFERENCES `trips` (`tripId`)

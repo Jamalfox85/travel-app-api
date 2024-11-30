@@ -20,6 +20,8 @@ type ItineraryItem struct {
 	Poiid    sql.NullString
 	Iscustom sql.NullBool
 	Photouri sql.NullString
+	Rating   sql.NullInt32
+	Price    sql.NullInt32
 }
 
 type Trip struct {
