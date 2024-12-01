@@ -22,10 +22,12 @@ type Trip struct {
 	Photo_uri		string
 	Latitude		float64
 	Longitude		float64
+	Activities		[]ItineraryItem
 }
 
 type TripRepository struct {
 	queries *queries.Queries
+	itinerary *ItineraryItemRepository
 }
 
 func NewTripRepository(db *sql.DB) *TripRepository {
@@ -33,6 +35,7 @@ func NewTripRepository(db *sql.DB) *TripRepository {
 
 	return &TripRepository{
 		queries: 	queries,
+		itinerary: 	NewItineraryItemRepository(db),
 	}
 }
 
@@ -44,9 +47,11 @@ func (r *TripRepository) FindTrips(ctx *gin.Context, userId int) ([]Trip, error)
 		log.Fatalf("sqlc query error: %v", err)  // Use log.Fatalf for immediate feedback
 	}
 
+
 	var trips []Trip
 	for _, row := range rows {
-		fmt.Println(row);
+		itineraryItems, _ := r.itinerary.FindItineraryItems(ctx, int(row.Tripid))
+		fmt.Println("itineraryItems", itineraryItems)
 		trip := Trip{
 			ID:			int(row.Tripid),
 			Title:		row.Title.String,
@@ -58,12 +63,36 @@ func (r *TripRepository) FindTrips(ctx *gin.Context, userId int) ([]Trip, error)
 			Photo_uri: 	row.PhotoUri.String,
 			Latitude:	float64(row.Latitude.Float64),
 			Longitude:	float64(row.Longitude.Float64),
+			Activities: itineraryItems,
 		}
 		trips = append(trips, trip)
 	}
 
 	return trips, nil
 }
+// 	rows, err := i.FindItineraryItems(ctx, tripId)
+// 	if err != nil {
+// 		log.Fatalf("sqlc query error: %v", err)
+// 	}
+// 	// var itineraryItems []ItineraryItem
+// 	// for _, row := range rows {
+// 	// 	item := ItineraryItem{
+// 	// 		Id:			int(row.Itemid),
+// 	// 		TripId:		int(row.Tripid.Int32),
+// 	// 		Title:		row.Title.String,
+// 	// 		Date:		row.Date.Time.Format("MM-DD-YY"),
+// 	// 		Url:		row.Url.String,
+// 	// 		Phone:		row.Phone.String,
+// 	// 		Address:	row.Address.String,
+// 	// 		PoiId:		row.Poiid.String,
+// 	// 		Rating: 	int(row.Rating.Int32),
+// 	// 		Price:		int(row.Price.Int32),
+// 	// 	}
+// 	// 	itineraryItems = append(itineraryItems, item)
+// 	// }
+// 	// return itineraryItems, nil
+// 	return rows, nil
+// }
 
 func (r * TripRepository) CreateTrip(ctx *gin.Context, newTrip Trip) (error) {
 	formattedStartDate, _ := time.Parse("2006-01-02", newTrip.Start_date)
