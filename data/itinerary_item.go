@@ -49,7 +49,7 @@ func (r *ItineraryItemRepository) FindItineraryItems(ctx *gin.Context, tripId in
 			Id:			int(row.Itemid),
 			TripId:		int(row.Tripid.Int32),
 			Title:		row.Title.String,
-			Date:		row.Date.Time.Format("MM-DD-YY"),
+			Date:		row.Date.Time.Format("2006-01-02"),
 			Url:		row.Url.String,
 			Phone:		row.Phone.String,
 			Address:	row.Address.String,
