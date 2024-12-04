@@ -6,4 +6,5 @@ type Application struct {
 	Users				*data.UserRepository
 	Trips				*data.TripRepository
 	ItineraryItems		*data.ItineraryItemRepository
+	Accommodations		*data.AccommodationRepository
 }

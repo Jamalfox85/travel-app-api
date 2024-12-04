@@ -19,11 +19,13 @@ func NewApplication() *Application {
 	users := data.NewUserRepository(db)
 	trips := data.NewTripRepository(db)
 	itineraryItems := data.NewItineraryItemRepository(db)
+	accommodations := data.NewAccommodationRepository(db)
 
 	return &Application{
 		Users: users,
 		Trips: trips,
 		ItineraryItems: itineraryItems,
+		Accommodations: accommodations,
 	}
 }
 

@@ -9,6 +9,15 @@ import (
 	"encoding/json"
 )
 
+type Accommodation struct {
+	ID        int32
+	Tripid    int32
+	Title     string
+	Address   sql.NullString
+	StartDate sql.NullTime
+	EndDate   sql.NullTime
+}
+
 type ItineraryItem struct {
 	Itemid   int32
 	Tripid   sql.NullInt32

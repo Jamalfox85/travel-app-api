@@ -40,3 +40,14 @@ CREATE TABLE `itinerary_items` (
   CONSTRAINT `itinerary_items_ibfk_1` FOREIGN KEY (`tripId`) REFERENCES `trips` (`tripId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE `accommodations` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `tripId` int NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `start_date` datetime DEFAULT NULL,
+  `end_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tripId` (`tripId`),
+  CONSTRAINT `accommodations_ibfk_1` FOREIGN KEY (`tripId`) REFERENCES `trips` (`tripId`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

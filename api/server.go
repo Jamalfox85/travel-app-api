@@ -14,6 +14,7 @@ type Server struct {
 	Users *data.UserRepository
 	Trips *data.TripRepository
 	ItineraryItems *data.ItineraryItemRepository
+	Accommodations *data.AccommodationRepository
 }
 
 func NewServer(	listenAddr string) *Server {
@@ -36,6 +37,9 @@ func (s *Server) Start(app *Application) {
 	// Itinerary Items
 	router.GET("/itinerary/:tripId", handlers.GetItineraryItems(app.ItineraryItems))
 	router.POST("/itinerary", handlers.CreateItineraryItem(app.ItineraryItems))
+
+	// Accommodations
+	router.GET("/accommodations/:tripId", handlers.GetAccommodations(app.Accommodations))
 
 
 	fmt.Println("Server Running on", s.listenAddr);
