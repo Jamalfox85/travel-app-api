@@ -23,11 +23,13 @@ type Trip struct {
 	Latitude		float64
 	Longitude		float64
 	Activities		[]ItineraryItem
+	Accommodations	[]Accommodation
 }
 
 type TripRepository struct {
-	queries *queries.Queries
-	itinerary *ItineraryItemRepository
+	queries 		*queries.Queries
+	itinerary 		*ItineraryItemRepository
+	accomodation 	*AccommodationRepository
 }
 
 func NewTripRepository(db *sql.DB) *TripRepository {
@@ -36,6 +38,7 @@ func NewTripRepository(db *sql.DB) *TripRepository {
 	return &TripRepository{
 		queries: 	queries,
 		itinerary: 	NewItineraryItemRepository(db),
+		accomodation: NewAccommodationRepository(db),
 	}
 }
 
@@ -51,7 +54,7 @@ func (r *TripRepository) FindTrips(ctx *gin.Context, userId int) ([]Trip, error)
 	var trips []Trip
 	for _, row := range rows {
 		itineraryItems, _ := r.itinerary.FindItineraryItems(ctx, int(row.Tripid))
-		fmt.Println("itineraryItems", itineraryItems)
+		accommodations, _ := r.accomodation.FindAccommodations(ctx, int(row.Tripid))
 		trip := Trip{
 			ID:			int(row.Tripid),
 			Title:		row.Title.String,
@@ -64,6 +67,7 @@ func (r *TripRepository) FindTrips(ctx *gin.Context, userId int) ([]Trip, error)
 			Latitude:	float64(row.Latitude.Float64),
 			Longitude:	float64(row.Longitude.Float64),
 			Activities: itineraryItems,
+			Accommodations: accommodations,
 		}
 		trips = append(trips, trip)
 	}
