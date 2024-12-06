@@ -40,6 +40,7 @@ func (s *Server) Start(app *Application) {
 
 	// Accommodations
 	router.GET("/accommodations/:tripId", handlers.GetAccommodations(app.Accommodations))
+	router.POST("/accommodations", handlers.CreateAccommodation(app.Accommodations))
 
 
 	fmt.Println("Server Running on", s.listenAddr);

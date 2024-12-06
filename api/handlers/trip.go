@@ -27,7 +27,8 @@ func CreateTrip(trips TripFinder) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var newTrip data.Trip
 		
-		if err := ctx.ShouldBindJSON(&newTrip); err != nil {
+		if err := ctx.ShouldBindJSON(&newTrip); 
+		err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}

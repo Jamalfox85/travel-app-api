@@ -7,10 +7,39 @@ package queries
 
 import (
 	"context"
+	"database/sql"
 )
 
+const createAccommodation = `-- name: CreateAccommodation :exec
+INSERT INTO accommodations (tripId, title, address, start_date, end_date, url, phone)
+VALUES (?, ?, ?, ?, ?, ?, ?)
+`
+
+type CreateAccommodationParams struct {
+	Tripid    int32
+	Title     string
+	Address   sql.NullString
+	StartDate sql.NullTime
+	EndDate   sql.NullTime
+	Url       sql.NullString
+	Phone     sql.NullString
+}
+
+func (q *Queries) CreateAccommodation(ctx context.Context, arg CreateAccommodationParams) error {
+	_, err := q.db.ExecContext(ctx, createAccommodation,
+		arg.Tripid,
+		arg.Title,
+		arg.Address,
+		arg.StartDate,
+		arg.EndDate,
+		arg.Url,
+		arg.Phone,
+	)
+	return err
+}
+
 const getAccommodations = `-- name: GetAccommodations :many
-SELECT id, tripid, title, address, start_date, end_date FROM accommodations
+SELECT id, tripid, title, address, start_date, end_date, url, phone FROM accommodations
 WHERE tripId = ?
 `
 
@@ -30,6 +59,8 @@ func (q *Queries) GetAccommodations(ctx context.Context, tripid int32) ([]Accomm
 			&i.Address,
 			&i.StartDate,
 			&i.EndDate,
+			&i.Url,
+			&i.Phone,
 		); err != nil {
 			return nil, err
 		}

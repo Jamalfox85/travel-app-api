@@ -3,6 +3,7 @@ package data
 import (
 	"database/sql"
 	"fmt"
+	"time"
 
 	"travel-app-api/data/queries"
 
@@ -16,6 +17,8 @@ type Accommodation struct {
 	Address		string
 	StartDate	string
 	EndDate		string
+	Url			string
+	Phone		string
 }
 
 type AccommodationRepository struct {
@@ -52,4 +55,25 @@ func (r *AccommodationRepository) FindAccommodations(ctx *gin.Context, tripId in
 	}
 
 	return accommodations, nil
+}
+
+func (r *AccommodationRepository) CreateAccommodation(ctx *gin.Context, accommodation Accommodation) error {
+	formattedStartDate, _ := time.Parse("2006-01-02", accommodation.StartDate)
+	formattedEndDate, _ := time.Parse("2006-01-02", accommodation.EndDate)
+
+	params := queries.CreateAccommodationParams{
+		Tripid:		int32(accommodation.TripId),
+		Title:		accommodation.Title,
+		Address:	sql.NullString{String: accommodation.Address, Valid: true},
+		StartDate:	sql.NullTime{Time: formattedStartDate, Valid: true},
+		EndDate:	sql.NullTime{Time: formattedEndDate, Valid: true},
+		Url:		sql.NullString{String: accommodation.Url, Valid: true},
+		Phone:		sql.NullString{String: accommodation.Phone, Valid: true},
+	}
+
+	err := r.queries.CreateAccommodation(ctx, params)
+	if err != nil {
+		return fmt.Errorf("error creating accommodation", err)
+	}
+	return nil
 }

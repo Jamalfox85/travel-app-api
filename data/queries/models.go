@@ -16,6 +16,8 @@ type Accommodation struct {
 	Address   sql.NullString
 	StartDate sql.NullTime
 	EndDate   sql.NullTime
+	Url       sql.NullString
+	Phone     sql.NullString
 }
 
 type ItineraryItem struct {

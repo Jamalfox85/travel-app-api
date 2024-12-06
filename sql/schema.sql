@@ -47,6 +47,8 @@ CREATE TABLE `accommodations` (
   `address` varchar(255) DEFAULT NULL,
   `start_date` datetime DEFAULT NULL,
   `end_date` datetime DEFAULT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tripId` (`tripId`),
   CONSTRAINT `accommodations_ibfk_1` FOREIGN KEY (`tripId`) REFERENCES `trips` (`tripId`)
