@@ -6,7 +6,6 @@ package queries
 
 import (
 	"database/sql"
-	"encoding/json"
 )
 
 type Accommodation struct {
@@ -49,10 +48,8 @@ type Trip struct {
 }
 
 type User struct {
-	Userid      int32
-	Firstname   sql.NullString
-	Lastname    sql.NullString
-	Email       sql.NullString
-	Username    sql.NullString
-	Preferences json.RawMessage
+	UserID    int32
+	FirstName sql.NullString
+	LastName  sql.NullString
+	Email     sql.NullString
 }

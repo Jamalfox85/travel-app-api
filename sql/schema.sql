@@ -1,11 +1,10 @@
 CREATE TABLE `users` (
-  `UserID` int NOT NULL AUTO_INCREMENT,
-  `FirstName` varchar(255) DEFAULT NULL,
-  `LastName` varchar(255) DEFAULT NULL,
-  `Email` varchar(255) DEFAULT NULL,
-  `Username` varchar(255) DEFAULT NULL,
-  `Preferences` json DEFAULT NULL,
-  PRIMARY KEY (`UserID`)
+  `user_id` int NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `unique_email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `trips` (

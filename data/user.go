@@ -2,7 +2,6 @@ package data
 
 import (
 	"database/sql"
-	"encoding/json"
 	"fmt"
 
 	"travel-app-api/data/queries"
@@ -11,12 +10,10 @@ import (
 )
 
 type User struct {
-	ID			int
+	UserID		int
 	FirstName	string
 	LastName	string
 	Email		string
-	Username	string
-	Preferences	json.RawMessage
 }
 
 type UserRepository struct {
@@ -31,25 +28,47 @@ func NewUserRepository(db *sql.DB) *UserRepository {
 	}
 }
 
-func (r *UserRepository) FindUser(ctx *gin.Context, userId int) (User, error) {
-	formattedUserId := int32(userId)
-	fmt.Println(formattedUserId)
+func (r *UserRepository) AuthorizeUser(ctx *gin.Context, activeUser User) (User, error) {
 
-	row, err := r.queries.GetUser(ctx, 1)
+	email := sql.NullString{String: activeUser.Email, Valid: activeUser.Email != ""}
+	row, _ := r.queries.GetUser(ctx, email)
+
+	// if err != nil {
+	// 	return User{}, fmt.Errorf("error fetching user details", err)
+	// }
+
+	if row.UserID != 0 {
+		userDetails := User{
+			UserID:				int(row.UserID),
+			FirstName:		row.FirstName.String,
+			LastName:		row.LastName.String,
+			Email:			row.Email.String,
+		}
+		return userDetails, nil		
+		
+	} else {
+		err := r.CreateUser(ctx, activeUser)
+		if err != nil {
+			return User{}, fmt.Errorf("error creating new user", err)
+		}
+
+		return activeUser, nil
+	}
+
+}
+
+func (r *UserRepository) CreateUser(ctx *gin.Context, newUser User) (error) {
+
+	params := queries.CreateUserParams{
+		FirstName: sql.NullString{String: newUser.FirstName, Valid: newUser.FirstName != ""},
+		LastName: sql.NullString{String: newUser.LastName, Valid: newUser.LastName != ""},
+		Email: sql.NullString{String: newUser.Email, Valid: newUser.Email != ""},
+	}
+
+	err := r.queries.CreateUser(ctx, params);
 	if err != nil {
-		return User{}, fmt.Errorf("error fetching user details", err)
+		fmt.Println(err);
+		return fmt.Errorf("error creating new user");
 	}
-
-
-	user := User{
-		ID:				int(row.Userid),
-		FirstName:		row.Firstname.String,
-		LastName:		row.Lastname.String,
-		Email:			row.Email.String,
-		Username:		row.Username.String,
-		Preferences:	row.Preferences,
-	}
-
-
-	return user, nil
+	return nil
 }

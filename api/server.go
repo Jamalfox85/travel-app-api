@@ -28,7 +28,7 @@ func (s *Server) Start(app *Application) {
 	router.Use(CORSMiddleware())
 
 	// Users
-	router.GET("/users/:userId", handlers.GetUser(app.Users))
+	router.POST("/users", handlers.AuthorizeUser(app.Users))
 	
 	// Trips
 	router.GET("/trips/:userId", handlers.GetTrips(app.Trips))
