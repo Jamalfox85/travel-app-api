@@ -33,9 +33,6 @@ func (r *UserRepository) AuthorizeUser(ctx *gin.Context, activeUser User) (User,
 	email := sql.NullString{String: activeUser.Email, Valid: activeUser.Email != ""}
 	row, _ := r.queries.GetUser(ctx, email)
 
-	// if err != nil {
-	// 	return User{}, fmt.Errorf("error fetching user details", err)
-	// }
 
 	if row.UserID != 0 {
 		userDetails := User{
@@ -51,6 +48,9 @@ func (r *UserRepository) AuthorizeUser(ctx *gin.Context, activeUser User) (User,
 		if err != nil {
 			return User{}, fmt.Errorf("error creating new user", err)
 		}
+
+		id, _ := r.queries.GetLastInsertId(ctx)
+		activeUser.UserID = int(id)
 
 		return activeUser, nil
 	}

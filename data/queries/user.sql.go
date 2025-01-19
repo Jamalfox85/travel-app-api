@@ -26,6 +26,17 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) error {
 	return err
 }
 
+const getLastInsertId = `-- name: GetLastInsertId :one
+SELECT LAST_INSERT_ID() AS user_id
+`
+
+func (q *Queries) GetLastInsertId(ctx context.Context) (int64, error) {
+	row := q.db.QueryRowContext(ctx, getLastInsertId)
+	var user_id int64
+	err := row.Scan(&user_id)
+	return user_id, err
+}
+
 const getUser = `-- name: GetUser :one
 SELECT user_id, first_name, last_name, email FROM users
 WHERE email = ?

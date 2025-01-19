@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"travel-app-api/data"
 
@@ -11,16 +10,6 @@ import (
 type UserFinder interface {
 	AuthorizeUser(*gin.Context, data.User) (data. User, error)
 }
-
-// func GetUser(users UserFinder) gin.HandlerFunc {
-// 	return func(ctx *gin.Context) {
-// 		userId, _ := strconv.Atoi(ctx.Param("userId"))
-
-// 		user, _ := users.FindUser(ctx, userId)
-
-// 		ctx.IndentedJSON(http.StatusOK, user)
-// 	}
-// }
 
 func AuthorizeUser(users UserFinder) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -38,7 +27,6 @@ func AuthorizeUser(users UserFinder) gin.HandlerFunc {
 			return
 		}
 
-		fmt.Println("User:", activeUser)
 		ctx.IndentedJSON(http.StatusOK, userDetails)
 	}
 }
